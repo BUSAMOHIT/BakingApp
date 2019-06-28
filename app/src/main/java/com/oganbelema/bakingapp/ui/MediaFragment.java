@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.material.snackbar.Snackbar;
 import com.oganbelema.bakingapp.R;
 import com.oganbelema.bakingapp.databinding.FragmentMediaBinding;
 import com.oganbelema.network.data.Step;
@@ -86,9 +87,15 @@ public class MediaFragment extends Fragment {
         mPlayer.setPlayWhenReady(playWhenReady);
         mPlayer.seekTo(currentWindow, playbackPosition);
 
-        Uri uri = Uri.parse(mVideoUrl);
-        MediaSource mediaSource = buildMediaSource(uri);
-        mPlayer.prepare(mediaSource, true, false);
+        if (mVideoUrl != null){
+            Uri uri = Uri.parse(mVideoUrl);
+            MediaSource mediaSource = buildMediaSource(uri);
+            mPlayer.prepare(mediaSource, true, false);
+        } else {
+            Snackbar.make(mFragmentMediaBinding.getRoot(),
+                    getContext().getString(R.string.no_video_url),
+                    Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void releasePlayer() {
