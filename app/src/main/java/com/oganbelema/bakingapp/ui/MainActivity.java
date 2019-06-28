@@ -21,8 +21,15 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mainContainer);
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+
+        if (isTablet){
+            navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.tabletContainer);
+        } else {
+            navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.mainContainer);
+        }
 
         navHostFragment.getNavController().addOnDestinationChangedListener(
                 (controller, destination, arguments) -> {

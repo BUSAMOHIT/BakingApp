@@ -38,7 +38,10 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
     IngredientAndStepViewModelFactory mIngredientAndStepViewModelFactory;
 
     private IngredientAndStepViewModel mIngredientAndStepViewModel;
+
     private Recipe mRecipe;
+
+    private boolean mIsTablet;
 
 
     public IngredientAndStepFragment() {
@@ -60,6 +63,8 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
         super.onViewCreated(view, savedInstanceState);
 
         ((BakingApp) getActivity().getApplication()).getAppComponent().inject(this);
+
+        mIsTablet = getContext().getResources().getBoolean(R.bool.isTablet);
 
         mIngredientAndStepViewModel = ViewModelProviders.of(this,
                 mIngredientAndStepViewModelFactory).get(IngredientAndStepViewModel.class);
@@ -106,6 +111,11 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
         IngredientAndStepFragmentDirections.ActionIngredientAndStepFragmentToMediaFragment action =
                 IngredientAndStepFragmentDirections.
                         actionIngredientAndStepFragmentToMediaFragment(mRecipe.getName(),step);
-        Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
+        if (mIsTablet){
+            Navigation.findNavController(getActivity(), R.id.tabletContainer).navigate(action);
+        } else {
+            Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
+        }
+
     }
 }

@@ -43,6 +43,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
 
     private FragmentRecipeBinding mFragmentRecipeBinding;
 
+    private boolean mIsTablet;
+
     public RecipeFragment() {
         // Required empty public constructor
     }
@@ -63,6 +65,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
         super.onViewCreated(view, savedInstanceState);
 
         ((BakingApp) getActivity().getApplication()).getAppComponent().inject(this);
+
+        mIsTablet = getContext().getResources().getBoolean(R.bool.isTablet);
 
         mRecipeViewModel = ViewModelProviders.of(this, mRecipeViewModelFactory)
                 .get(RecipeViewModel.class);
@@ -103,8 +107,15 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
 
     @Override
     public void onRecipeItemClicked(Recipe recipe) {
-        RecipeFragmentDirections.ActionRecipeFragmentToIngredientAndStepFragment action =
-                RecipeFragmentDirections.actionRecipeFragmentToIngredientAndStepFragment(recipe);
-        Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
+        if (mIsTablet){
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("recipe", recipe);
+            Navigation.findNavController(getActivity(), R.id.tabletContainer)
+                    .navigate(R.id.ingredientAndStepFragment, bundle);
+        } else {
+            RecipeFragmentDirections.ActionRecipeFragmentToIngredientAndStepFragment action =
+                    RecipeFragmentDirections.actionRecipeFragmentToIngredientAndStepFragment(recipe);
+            Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
+        }
     }
 }

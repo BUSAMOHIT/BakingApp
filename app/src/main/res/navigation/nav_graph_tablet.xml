@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_tablet"
+    app:startDestination="@+id/ingredientAndStepFragment"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <fragment
+        android:id="@+id/ingredientAndStepFragment"
+        android:name="com.oganbelema.bakingapp.ui.IngredientAndStepFragment"
+        android:label="@string/recipe_detail"
+        tools:layout="@layout/fragment_ingredient_and_step" >
+        <argument
+            android:name="recipe"
+            app:argType="com.oganbelema.network.data.Recipe" />
+        <action
+            android:id="@+id/action_ingredientAndStepFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mediaFragment"
+        android:name="com.oganbelema.bakingapp.ui.MediaFragment"
+        android:label="fragment_media"
+        tools:layout="@layout/fragment_media" >
+        <argument
+            android:name="recipeName"
+            app:argType="string" />
+        <argument
+            android:name="step"
+            app:argType="com.oganbelema.network.data.Step" />
+    </fragment>
+
+</navigation>

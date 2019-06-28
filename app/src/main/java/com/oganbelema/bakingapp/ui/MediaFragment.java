@@ -9,27 +9,37 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.material.snackbar.Snackbar;
 import com.oganbelema.bakingapp.R;
 import com.oganbelema.bakingapp.databinding.FragmentMediaBinding;
 import com.oganbelema.network.data.Step;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MediaFragment extends Fragment {
+public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
+
+    private static final String TAG = MediaFragment.class.getName();
 
     private SimpleExoPlayer mPlayer;
 
@@ -91,10 +101,6 @@ public class MediaFragment extends Fragment {
             Uri uri = Uri.parse(mVideoUrl);
             MediaSource mediaSource = buildMediaSource(uri);
             mPlayer.prepare(mediaSource, true, false);
-        } else {
-            Snackbar.make(mFragmentMediaBinding.getRoot(),
-                    getContext().getString(R.string.no_video_url),
-                    Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -112,6 +118,70 @@ public class MediaFragment extends Fragment {
         return new ExtractorMediaSource.Factory(
                 new DefaultHttpDataSourceFactory("bakingApp")).
                 createMediaSource(uri);
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+        switch (error.type) {
+            case ExoPlaybackException.TYPE_SOURCE:
+                Toast.makeText(getContext(), getContext().getString(R.string.no_video_url),
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, "TYPE_SOURCE: " + error.getSourceException().getMessage());
+                break;
+
+            case ExoPlaybackException.TYPE_RENDERER:
+                Log.e(TAG, "TYPE_RENDERER: " + error.getRendererException().getMessage());
+                break;
+
+            case ExoPlaybackException.TYPE_UNEXPECTED:
+                Log.e(TAG, "TYPE_UNEXPECTED: " + error.getUnexpectedException().getMessage());
+                break;
+        }
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
+
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onRepeatModeChanged(int repeatMode) {
+
+    }
+
+    @Override
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity(int reason) {
+
+    }
+
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+    }
+
+    @Override
+    public void onSeekProcessed() {
+
     }
 
     @Override
