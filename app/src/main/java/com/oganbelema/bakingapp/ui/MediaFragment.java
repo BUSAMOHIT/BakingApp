@@ -1,7 +1,5 @@
 package com.oganbelema.bakingapp.ui;
 
-
-import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,8 +44,6 @@ public class MediaFragment extends Fragment {
 
     private Step step;
 
-    private String url;
-
 
     public MediaFragment() {
         // Required empty public constructor
@@ -59,7 +55,7 @@ public class MediaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mFragmentMediaBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_media, container,
-                true);
+                false);
         return mFragmentMediaBinding.getRoot();
     }
 
@@ -107,18 +103,8 @@ public class MediaFragment extends Fragment {
 
     private MediaSource buildMediaSource(Uri uri) {
         return new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory("exoplayer-codelab")).
+                new DefaultHttpDataSourceFactory("bakingApp")).
                 createMediaSource(uri);
-    }
-
-    @SuppressLint("InlinedApi")
-    private void hideSystemUi() {
-        mFragmentMediaBinding.fullScreenVideo.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     @Override
@@ -132,13 +118,25 @@ public class MediaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //hideSystemUi();
-        initializePlayer();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            initializePlayer();
+        }
+
     }
 
     @Override
     public void onPause() {
-        releasePlayer();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            releasePlayer();
+        }
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            releasePlayer();
+        }
+        super.onStop();
     }
 }
