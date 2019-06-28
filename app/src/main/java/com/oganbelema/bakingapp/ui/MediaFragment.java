@@ -74,7 +74,7 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getArguments() != null){
+        if (getArguments() != null) {
             MediaFragmentArgs args = MediaFragmentArgs.fromBundle(getArguments());
 
             String recipeName = args.getRecipeName();
@@ -97,11 +97,11 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
         mPlayer.setPlayWhenReady(playWhenReady);
         mPlayer.seekTo(currentWindow, playbackPosition);
 
-        if (mVideoUrl != null){
-            Uri uri = Uri.parse(mVideoUrl);
-            MediaSource mediaSource = buildMediaSource(uri);
-            mPlayer.prepare(mediaSource, true, false);
-        }
+
+        Uri uri = Uri.parse(mVideoUrl);
+        MediaSource mediaSource = buildMediaSource(uri);
+        mPlayer.prepare(mediaSource, true, false);
+
     }
 
     private void releasePlayer() {
@@ -187,16 +187,20 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
     @Override
     public void onStart() {
         super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            initializePlayer();
+        if (mVideoUrl != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                initializePlayer();
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            initializePlayer();
+        if (mVideoUrl != null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                initializePlayer();
+            }
         }
 
     }
@@ -211,7 +215,7 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
 
     @Override
     public void onStop() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             releasePlayer();
         }
         super.onStop();
