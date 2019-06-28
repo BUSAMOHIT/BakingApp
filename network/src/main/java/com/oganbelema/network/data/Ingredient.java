@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class Ingredient implements Parcelable {
 
     @SerializedName("quantity")
@@ -70,5 +72,17 @@ public class Ingredient implements Parcelable {
         parcel.writeDouble(quantity);
         parcel.writeString(measure);
         parcel.writeString(ingredient);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(quantity, measure, ingredient);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Ingredient)) return false;
+        return quantity == ((Ingredient) obj).quantity && measure == ((Ingredient) obj).measure &&
+                ingredient == ((Ingredient) obj).ingredient;
     }
 }

@@ -3,6 +3,7 @@ package com.oganbelema.bakingapp.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.oganbelema.bakingapp.ingredient.IngredientAdapter;
 import com.oganbelema.bakingapp.recipe.RecipeAdapter;
 import com.oganbelema.bakingapp.step.StepAdapter;
 
@@ -34,5 +35,10 @@ public class AppModule {
     @Provides
     public StepAdapter provideStepAdapter(){
         return new StepAdapter();
+    }
+
+    @Provides
+    public IngredientAdapter provideIngredientAdapter(){
+        return new IngredientAdapter();
     }
 }

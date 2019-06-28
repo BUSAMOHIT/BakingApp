@@ -66,15 +66,26 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
 
         mIngredientAndStepViewModel.getStepAdapter().setRecipeItemOnClickListener(this);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL);
+
         fragmentIngredientAndStepBinding.stepsRecyclerView
                 .setLayoutManager(new LinearLayoutManager(getContext()));
 
         fragmentIngredientAndStepBinding.stepsRecyclerView
-                .addItemDecoration(new DividerItemDecoration(getContext(),
-                        DividerItemDecoration.VERTICAL));
+                .addItemDecoration(dividerItemDecoration);
 
         fragmentIngredientAndStepBinding.stepsRecyclerView
                 .setAdapter(mIngredientAndStepViewModel.getStepAdapter());
+
+        fragmentIngredientAndStepBinding.ingredientsRecyclerView.
+                setLayoutManager(new LinearLayoutManager(getContext()));
+
+        fragmentIngredientAndStepBinding.ingredientsRecyclerView
+                .addItemDecoration(dividerItemDecoration);
+
+        fragmentIngredientAndStepBinding.ingredientsRecyclerView
+                .setAdapter(mIngredientAndStepViewModel.getIngredientAdapter());
 
         if (getArguments() != null){
             IngredientAndStepFragmentArgs args =

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.oganbelema.bakingapp.ingredient.IngredientAdapter;
 import com.oganbelema.bakingapp.step.StepAdapter;
 
 import javax.inject.Inject;
@@ -15,14 +16,18 @@ public class IngredientAndStepViewModelFactory implements ViewModelProvider.Fact
 
     private final StepAdapter mStepAdapter;
 
+    private final IngredientAdapter mIngredientAdapter;
+
     @Inject
-    public IngredientAndStepViewModelFactory(StepAdapter stepAdapter) {
+    public IngredientAndStepViewModelFactory(StepAdapter stepAdapter, IngredientAdapter
+            ingredientAdapter) {
         this.mStepAdapter = stepAdapter;
+        this.mIngredientAdapter = ingredientAdapter;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new IngredientAndStepViewModel(mStepAdapter);
+        return (T) new IngredientAndStepViewModel(mStepAdapter, mIngredientAdapter);
     }
 }
