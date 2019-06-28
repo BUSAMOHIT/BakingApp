@@ -11,8 +11,6 @@ import com.oganbelema.bakingapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     private NavHostFragment navHostFragment;
 
     @Override
@@ -31,15 +29,19 @@ public class MainActivity extends AppCompatActivity {
                     .findFragmentById(R.id.mainContainer);
         }
 
-        navHostFragment.getNavController().addOnDestinationChangedListener(
-                (controller, destination, arguments) -> {
-                    if (destination.getId() != R.id.recipeFragment){
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                    } else {
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (navHostFragment != null){
+            navHostFragment.getNavController().addOnDestinationChangedListener(
+                    (controller, destination, arguments) -> {
+                        if (getSupportActionBar() != null){
+                            if (destination.getId() != R.id.recipeFragment){
+                                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                            } else {
+                                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                            }
+                        }
                     }
-                }
-        );
+            );
+        }
 
     }
 

@@ -37,8 +37,6 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
     @Inject
     IngredientAndStepViewModelFactory mIngredientAndStepViewModelFactory;
 
-    private IngredientAndStepViewModel mIngredientAndStepViewModel;
-
     private Recipe mRecipe;
 
     private boolean mIsTablet;
@@ -48,9 +46,8 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentIngredientAndStepBinding = DataBindingUtil.inflate(inflater,
@@ -62,11 +59,13 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((BakingApp) getActivity().getApplication()).getAppComponent().inject(this);
+        if (getActivity() != null)
+            ((BakingApp) getActivity().getApplication()).getAppComponent().inject(this);
 
-        mIsTablet = getContext().getResources().getBoolean(R.bool.isTablet);
+        if (getContext() != null)
+            mIsTablet = getContext().getResources().getBoolean(R.bool.isTablet);
 
-        mIngredientAndStepViewModel = ViewModelProviders.of(this,
+        IngredientAndStepViewModel mIngredientAndStepViewModel = ViewModelProviders.of(this,
                 mIngredientAndStepViewModelFactory).get(IngredientAndStepViewModel.class);
 
         mIngredientAndStepViewModel.getStepAdapter().setRecipeItemOnClickListener(this);
@@ -92,7 +91,7 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
         fragmentIngredientAndStepBinding.ingredientsRecyclerView
                 .setAdapter(mIngredientAndStepViewModel.getIngredientAdapter());
 
-        if (getArguments() != null){
+        if (getArguments() != null) {
             IngredientAndStepFragmentArgs args =
                     IngredientAndStepFragmentArgs.fromBundle(getArguments());
 
@@ -108,13 +107,16 @@ public class IngredientAndStepFragment extends Fragment implements StepAdapter.S
 
     @Override
     public void onStepItemClicked(Step step) {
-        IngredientAndStepFragmentDirections.ActionIngredientAndStepFragmentToMediaFragment action =
-                IngredientAndStepFragmentDirections.
-                        actionIngredientAndStepFragmentToMediaFragment(mRecipe.getName(),step);
-        if (mIsTablet){
-            Navigation.findNavController(getActivity(), R.id.tabletContainer).navigate(action);
-        } else {
-            Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
+        if (mRecipe != null) {
+            IngredientAndStepFragmentDirections.ActionIngredientAndStepFragmentToMediaFragment action =
+                    IngredientAndStepFragmentDirections.
+                            actionIngredientAndStepFragmentToMediaFragment(mRecipe.getName(), step);
+            if (getActivity() != null)
+                if (mIsTablet) {
+                    Navigation.findNavController(getActivity(), R.id.tabletContainer).navigate(action);
+                } else {
+                    Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
+                }
         }
 
     }

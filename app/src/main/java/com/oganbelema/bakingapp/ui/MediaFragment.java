@@ -18,9 +18,9 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -37,7 +37,7 @@ import com.oganbelema.network.data.Step;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
+public class MediaFragment extends Fragment implements Player.EventListener {
 
     private static final String TAG = MediaFragment.class.getName();
 
@@ -53,8 +53,6 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
 
     private FragmentMediaBinding mFragmentMediaBinding;
 
-    private Step step;
-
 
     public MediaFragment() {
         // Required empty public constructor
@@ -62,7 +60,7 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mFragmentMediaBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_media, container,
@@ -74,14 +72,15 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getArguments() != null){
+        if (getArguments() != null) {
             MediaFragmentArgs args = MediaFragmentArgs.fromBundle(getArguments());
 
             String recipeName = args.getRecipeName();
 
-            step = args.getStep();
+            Step step = args.getStep();
 
-            getActivity().setTitle(recipeName);
+            if (getActivity() != null)
+                getActivity().setTitle(recipeName);
 
             mVideoUrl = step.getVideoURL();
         }
@@ -97,11 +96,11 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
         mPlayer.setPlayWhenReady(playWhenReady);
         mPlayer.seekTo(currentWindow, playbackPosition);
 
-        if (mVideoUrl != null){
-            Uri uri = Uri.parse(mVideoUrl);
-            MediaSource mediaSource = buildMediaSource(uri);
-            mPlayer.prepare(mediaSource, true, false);
-        }
+
+        Uri uri = Uri.parse(mVideoUrl);
+        MediaSource mediaSource = buildMediaSource(uri);
+        mPlayer.prepare(mediaSource, true, false);
+
     }
 
     private void releasePlayer() {
@@ -124,7 +123,8 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
     public void onPlayerError(ExoPlaybackException error) {
         switch (error.type) {
             case ExoPlaybackException.TYPE_SOURCE:
-                Toast.makeText(getContext(), getContext().getString(R.string.no_video_url),
+                if (getContext() != null)
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_video_url),
                         Toast.LENGTH_LONG).show();
                 Log.e(TAG, "TYPE_SOURCE: " + error.getSourceException().getMessage());
                 break;
@@ -187,16 +187,20 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
     @Override
     public void onStart() {
         super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            initializePlayer();
+        if (mVideoUrl != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                initializePlayer();
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            initializePlayer();
+        if (mVideoUrl != null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                initializePlayer();
+            }
         }
 
     }
@@ -211,7 +215,7 @@ public class MediaFragment extends Fragment implements ExoPlayer.EventListener {
 
     @Override
     public void onStop() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             releasePlayer();
         }
         super.onStop();
