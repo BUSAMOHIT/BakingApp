@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -51,7 +50,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mFragmentRecipeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe,
@@ -64,9 +63,11 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((BakingApp) getActivity().getApplication()).getAppComponent().inject(this);
+        if (getActivity() != null)
+            ((BakingApp) getActivity().getApplication()).getAppComponent().inject(this);
 
-        mIsTablet = getContext().getResources().getBoolean(R.bool.isTablet);
+        if (getContext() != null)
+            mIsTablet = getContext().getResources().getBoolean(R.bool.isTablet);
 
         mRecipeViewModel = ViewModelProviders.of(this, mRecipeViewModelFactory)
                 .get(RecipeViewModel.class);
@@ -83,14 +84,14 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
 
 
         mRecipeViewModel.getNetworkStatus().observe(this, networkStatus -> {
-            if (!networkStatus){
+            if (!networkStatus) {
                 Toast.makeText(getContext(), "No internet", Toast.LENGTH_LONG).show();
             }
         });
 
         mRecipeViewModel.getRecipes().observe(this, recipes -> {
 
-            if (recipes != null){
+            if (recipes != null) {
                 mFragmentRecipeBinding.foodAnimationViews.setVisibility(View.GONE);
                 mRecipeViewModel.getRecipeAdapter().setRecipes(recipes);
 
@@ -98,7 +99,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
         });
 
         mRecipeViewModel.getError().observe(this, error -> {
-            if (error != null){
+            if (error != null) {
                 Log.e(TAG, error.getLocalizedMessage(), error);
             }
         });
@@ -107,15 +108,16 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
 
     @Override
     public void onRecipeItemClicked(Recipe recipe) {
-        if (mIsTablet){
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("recipe", recipe);
-            Navigation.findNavController(getActivity(), R.id.tabletContainer)
-                    .navigate(R.id.ingredientAndStepFragment, bundle);
-        } else {
-            RecipeFragmentDirections.ActionRecipeFragmentToIngredientAndStepFragment action =
-                    RecipeFragmentDirections.actionRecipeFragmentToIngredientAndStepFragment(recipe);
-            Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
-        }
+        if (getActivity() != null)
+            if (mIsTablet) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("recipe", recipe);
+                Navigation.findNavController(getActivity(), R.id.tabletContainer)
+                        .navigate(R.id.ingredientAndStepFragment, bundle);
+            } else {
+                RecipeFragmentDirections.ActionRecipeFragmentToIngredientAndStepFragment action =
+                        RecipeFragmentDirections.actionRecipeFragmentToIngredientAndStepFragment(recipe);
+                Navigation.findNavController(getActivity(), R.id.mainContainer).navigate(action);
+            }
     }
 }
