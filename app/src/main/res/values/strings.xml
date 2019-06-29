@@ -11,4 +11,6 @@
     <string name="steps">Steps</string>
     <string name="no_video_url">No video url for selected item</string>
     <string name="ingredient_item">%1$.2f %2$s of %3$s</string>
+    <string name="step_image">Step image</string>
+    <string name="no_media">No media provided</string>
 </resources>

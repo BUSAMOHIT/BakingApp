@@ -33,10 +33,18 @@ public class MainActivity extends AppCompatActivity {
             navHostFragment.getNavController().addOnDestinationChangedListener(
                     (controller, destination, arguments) -> {
                         if (getSupportActionBar() != null){
-                            if (destination.getId() != R.id.recipeFragment){
-                                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                            if (isTablet){
+                                if (destination.getId() != R.id.ingredientAndStepFragment){
+                                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                                } else {
+                                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                                }
                             } else {
-                                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                                if (destination.getId() != R.id.recipeFragment){
+                                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                                } else {
+                                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                                }
                             }
                         }
                     }

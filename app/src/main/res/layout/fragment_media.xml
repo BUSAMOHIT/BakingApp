@@ -11,7 +11,26 @@
             android:id="@+id/full_screen_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:background="@android:color/black"/>
+
+        <ImageView
+            android:id="@+id/step_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/step_image"
+            android:visibility="gone"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/no_media_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/no_media"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
 
     </FrameLayout>
 

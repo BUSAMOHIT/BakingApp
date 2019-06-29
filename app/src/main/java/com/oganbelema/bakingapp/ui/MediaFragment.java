@@ -32,6 +32,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.oganbelema.bakingapp.R;
 import com.oganbelema.bakingapp.databinding.FragmentMediaBinding;
 import com.oganbelema.network.data.Step;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -44,6 +45,8 @@ public class MediaFragment extends Fragment implements Player.EventListener {
     private SimpleExoPlayer mPlayer;
 
     private String mVideoUrl;
+
+    private String mImageUrl;
 
     private int currentWindow = 0;
 
@@ -83,6 +86,19 @@ public class MediaFragment extends Fragment implements Player.EventListener {
                 getActivity().setTitle(recipeName);
 
             mVideoUrl = step.getVideoURL();
+
+            mImageUrl = step.getThumbnailURL();
+
+            if (!mVideoUrl.isEmpty()){
+                mFragmentMediaBinding.fullScreenVideo.setVisibility(View.VISIBLE);
+            } else if (!mImageUrl.isEmpty()){
+                Picasso.get().load(mImageUrl).into(mFragmentMediaBinding.stepImage);
+                mFragmentMediaBinding.stepImage.setVisibility(View.VISIBLE);
+            } else {
+                mFragmentMediaBinding.noMediaTextView.setVisibility(View.VISIBLE);
+            }
+
+
         }
     }
 
@@ -187,7 +203,7 @@ public class MediaFragment extends Fragment implements Player.EventListener {
     @Override
     public void onStart() {
         super.onStart();
-        if (mVideoUrl != null) {
+        if (!mVideoUrl.isEmpty()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 initializePlayer();
             }
@@ -197,7 +213,7 @@ public class MediaFragment extends Fragment implements Player.EventListener {
     @Override
     public void onResume() {
         super.onResume();
-        if (mVideoUrl != null) {
+        if (!mVideoUrl.isEmpty()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 initializePlayer();
             }
@@ -215,7 +231,7 @@ public class MediaFragment extends Fragment implements Player.EventListener {
 
     @Override
     public void onStop() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             releasePlayer();
         }
         super.onStop();
