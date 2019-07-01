@@ -1,7 +1,13 @@
 package com.oganbelema.bakingapp.ui;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,13 +18,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
+import com.google.gson.Gson;
 import com.oganbelema.bakingapp.BakingApp;
+import com.oganbelema.bakingapp.Constants;
 import com.oganbelema.bakingapp.R;
 import com.oganbelema.bakingapp.databinding.FragmentRecipeBinding;
 import com.oganbelema.bakingapp.recipe.RecipeAdapter;
@@ -35,14 +37,22 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
 
     private static final String TAG = RecipeFragment.class.getSimpleName();
 
+    public static int sIndlingResourceCounter = 1;
+
     @Inject
     RecipeViewModelFactory mRecipeViewModelFactory;
+
+    @Inject
+    SharedPreferences mSharedPreferences;
 
     private RecipeViewModel mRecipeViewModel;
 
     private FragmentRecipeBinding mFragmentRecipeBinding;
 
     private boolean mIsTablet;
+
+    @Inject
+    Gson mGson;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -94,6 +104,10 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeItem
             if (recipes != null) {
                 mFragmentRecipeBinding.foodAnimationViews.setVisibility(View.GONE);
                 mRecipeViewModel.getRecipeAdapter().setRecipes(recipes);
+                String recipeJson = mGson.toJson(recipes.get(0));
+                mSharedPreferences.edit().putString(Constants.RECIPE_KEY, recipeJson)
+                        .apply();
+                sIndlingResourceCounter = 0;
 
             }
         });

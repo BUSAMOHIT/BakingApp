@@ -20,20 +20,20 @@ public class RecipeRepository {
         this.mRecipeNetworkSource = mRecipeNetworkSource;
     }
 
-    public LiveData<Boolean> getNetworkStatus(){
+    public LiveData<Boolean> getNetworkStatus() {
         return mRecipeNetworkSource.getNetworkStatus();
     }
 
-    public LiveData<List<Recipe>> getRecipes(){
+    public LiveData<List<Recipe>> getRecipes() {
         mRecipeNetworkSource.getRecipeRemote();
         return mRecipeNetworkSource.getRecipes();
     }
 
-    public LiveData<Throwable> getError(){
+    public LiveData<Throwable> getError() {
         return mRecipeNetworkSource.getError();
     }
 
-    public void dispose(){
+    public void dispose() {
         mRecipeNetworkSource.dispose();
     }
 }

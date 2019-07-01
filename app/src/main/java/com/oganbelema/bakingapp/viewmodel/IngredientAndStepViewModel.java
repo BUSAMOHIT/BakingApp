@@ -10,7 +10,7 @@ import com.oganbelema.network.data.Recipe;
 public class IngredientAndStepViewModel extends ViewModel {
 
     @Nullable
-    private  Recipe mRecipe;
+    private Recipe mRecipe;
 
     private final StepAdapter mStepAdapter;
 
@@ -30,11 +30,11 @@ public class IngredientAndStepViewModel extends ViewModel {
     }
 
     @Nullable
-    public Recipe getRecipe(){
+    public Recipe getRecipe() {
         return mRecipe;
     }
 
-    public void setRecipe(Recipe recipe){
+    public void setRecipe(Recipe recipe) {
         mRecipe = recipe;
         mStepAdapter.setSteps(recipe.getSteps());
         mIngredientAdapter.setIngredients(recipe.getIngredients());

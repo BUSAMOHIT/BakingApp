@@ -2,7 +2,9 @@ package com.oganbelema.bakingapp.di.module;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import com.oganbelema.bakingapp.Constants;
 import com.oganbelema.bakingapp.ingredient.IngredientAdapter;
 import com.oganbelema.bakingapp.recipe.RecipeAdapter;
 import com.oganbelema.bakingapp.step.StepAdapter;
@@ -23,22 +25,28 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public Context provideContext(){
+    public Context provideContext() {
         return mApplication;
     }
 
     @Provides
-    public RecipeAdapter provideRecipeAdapter(){
+    public RecipeAdapter provideRecipeAdapter() {
         return new RecipeAdapter();
     }
 
     @Provides
-    public StepAdapter provideStepAdapter(){
+    public StepAdapter provideStepAdapter() {
         return new StepAdapter();
     }
 
     @Provides
-    public IngredientAdapter provideIngredientAdapter(){
+    public IngredientAdapter provideIngredientAdapter() {
         return new IngredientAdapter();
+    }
+
+    @Provides
+    @Singleton
+    public SharedPreferences provideSharedPreferences(Context context) {
+        return context.getSharedPreferences(Constants.SHARED_PREFERENCE_ID, Context.MODE_PRIVATE);
     }
 }

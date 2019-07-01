@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.oganbelema.bakingapp.repository.RecipeRepository;
 import com.oganbelema.bakingapp.recipe.RecipeAdapter;
+import com.oganbelema.bakingapp.repository.RecipeRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

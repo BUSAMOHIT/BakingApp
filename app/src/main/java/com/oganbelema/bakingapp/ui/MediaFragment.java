@@ -3,17 +3,16 @@ package com.oganbelema.bakingapp.ui;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -89,9 +88,9 @@ public class MediaFragment extends Fragment implements Player.EventListener {
 
             mImageUrl = step.getThumbnailURL();
 
-            if (!mVideoUrl.isEmpty()){
+            if (!mVideoUrl.isEmpty()) {
                 mFragmentMediaBinding.fullScreenVideo.setVisibility(View.VISIBLE);
-            } else if (!mImageUrl.isEmpty()){
+            } else if (!mImageUrl.isEmpty()) {
                 Picasso.get().load(mImageUrl).into(mFragmentMediaBinding.stepImage);
                 mFragmentMediaBinding.stepImage.setVisibility(View.VISIBLE);
             } else {
@@ -141,7 +140,7 @@ public class MediaFragment extends Fragment implements Player.EventListener {
             case ExoPlaybackException.TYPE_SOURCE:
                 if (getContext() != null)
                     Toast.makeText(getContext(), getContext().getString(R.string.no_video_url),
-                        Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG).show();
                 Log.e(TAG, "TYPE_SOURCE: " + error.getSourceException().getMessage());
                 break;
 

@@ -21,7 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>{
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
     private List<Ingredient> ingredients = new ArrayList<>();
 
@@ -43,13 +43,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public int getItemCount() {
-        if (ingredients != null){
+        if (ingredients != null) {
             return ingredients.size();
         }
         return 0;
     }
 
-    public void setIngredients(List<Ingredient> ingredients){
+    public void setIngredients(List<Ingredient> ingredients) {
 
         if (diffIsOperating) return;
 
@@ -83,7 +83,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             this.ingredientItemBinding = ingredientItemBinding;
         }
 
-        void bindData(Ingredient ingredient){
+        void bindData(Ingredient ingredient) {
             ingredientItemBinding.ingredientTextView.setText(
                     ingredientItemBinding.getRoot().getContext().getString(R.string.ingredient_item,
                             ingredient.getQuantity(), ingredient.getMeasure(),

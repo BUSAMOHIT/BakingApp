@@ -20,7 +20,7 @@ public class IngredientDiffCallback extends DiffUtil.Callback {
 
     @Override
     public int getOldListSize() {
-        if (oldIngredientList != null){
+        if (oldIngredientList != null) {
             return oldIngredientList.size();
         }
 
@@ -29,7 +29,7 @@ public class IngredientDiffCallback extends DiffUtil.Callback {
 
     @Override
     public int getNewListSize() {
-        if (newIngredientList != null){
+        if (newIngredientList != null) {
             return newIngredientList.size();
         }
         return 0;

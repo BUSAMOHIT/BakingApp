@@ -2,6 +2,7 @@ package com.oganbelema.bakingapp.di.module;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.oganbelema.bakingapp.BuildConfig;
 import com.oganbelema.bakingapp.Constants;
 import com.oganbelema.network.BaseUrl;
@@ -28,13 +29,13 @@ public class NetworkModule {
     @Provides
     @Singleton
     @Named(Constants.NAMED_BASE_URL)
-    public String provideBaseUrl(){
+    public String provideBaseUrl() {
         return BaseUrl.BASE_URL;
     }
 
     @Provides
     @Singleton
-    public HttpLoggingInterceptor provideHttpLoggingInterceptor(){
+    public HttpLoggingInterceptor provideHttpLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(
                 BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE
@@ -44,21 +45,21 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public Cache provideCache(Context context){
+    public Cache provideCache(Context context) {
         return new Cache(new File(context.getCacheDir(), "http-cache"),
                 10 * 1024 * 1024); //10 MB
     }
 
     @Provides
     @Singleton
-    public CacheInterceptor provideCacheInterceptor(){
+    public CacheInterceptor provideCacheInterceptor() {
         return new CacheInterceptor();
     }
 
     @Provides
     @Singleton
     public OkHttpClient provideClient(HttpLoggingInterceptor httpLoggingInterceptor,
-                                      Cache cache, CacheInterceptor cacheInterceptor){
+                                      Cache cache, CacheInterceptor cacheInterceptor) {
         return new OkHttpClient()
                 .newBuilder()
                 .addInterceptor(httpLoggingInterceptor)
@@ -70,7 +71,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     public Retrofit provideBaseRetrofit(@Named(Constants.NAMED_BASE_URL) String baseUrl,
-                                        OkHttpClient client){
+                                        OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(client)
@@ -81,7 +82,12 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public RecipeApi provideRecipeApi(Retrofit retrofit){
+    public RecipeApi provideRecipeApi(Retrofit retrofit) {
         return retrofit.create(RecipeApi.class);
+    }
+
+    @Provides
+    public Gson provideGson() {
+        return new Gson();
     }
 }

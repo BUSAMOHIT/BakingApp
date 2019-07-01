@@ -3,8 +3,8 @@ package com.oganbelema.bakingapp.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.oganbelema.bakingapp.repository.RecipeRepository;
 import com.oganbelema.bakingapp.recipe.RecipeAdapter;
+import com.oganbelema.bakingapp.repository.RecipeRepository;
 import com.oganbelema.network.data.Recipe;
 
 import java.util.List;
@@ -16,24 +16,24 @@ public class RecipeViewModel extends ViewModel {
     private final RecipeAdapter mRecipeAdapter;
 
     public RecipeViewModel(RecipeRepository recipeRepository,
-                                 RecipeAdapter recipeAdapter) {
+                           RecipeAdapter recipeAdapter) {
         this.mRecipeRepository = recipeRepository;
         this.mRecipeAdapter = recipeAdapter;
     }
 
-    public RecipeAdapter getRecipeAdapter(){
+    public RecipeAdapter getRecipeAdapter() {
         return mRecipeAdapter;
     }
 
-    public LiveData<Boolean> getNetworkStatus(){
+    public LiveData<Boolean> getNetworkStatus() {
         return mRecipeRepository.getNetworkStatus();
     }
 
-    public LiveData<List<Recipe>> getRecipes(){
+    public LiveData<List<Recipe>> getRecipes() {
         return mRecipeRepository.getRecipes();
     }
 
-    public LiveData<Throwable> getError(){
+    public LiveData<Throwable> getError() {
         return mRecipeRepository.getError();
     }
 

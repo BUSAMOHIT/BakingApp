@@ -19,7 +19,7 @@ public class BakingApp extends Application {
                 .build();
     }
 
-    public AppComponent getAppComponent(){
+    public AppComponent getAppComponent() {
         return mAppComponent;
     }
 }

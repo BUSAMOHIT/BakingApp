@@ -18,7 +18,7 @@
         android:id="@+id/ingredientAndStepFragment"
         android:name="com.oganbelema.bakingapp.ui.IngredientAndStepFragment"
         android:label="@string/recipe_detail"
-        tools:layout="@layout/fragment_ingredient_and_step" >
+        tools:layout="@layout/fragment_ingredient_and_step">
         <argument
             android:name="recipe"
             app:argType="com.oganbelema.network.data.Recipe" />
@@ -30,7 +30,7 @@
         android:id="@+id/mediaFragment"
         android:name="com.oganbelema.bakingapp.ui.MediaFragment"
         android:label="fragment_media"
-        tools:layout="@layout/fragment_media" >
+        tools:layout="@layout/fragment_media">
         <argument
             android:name="recipeName"
             app:argType="string" />

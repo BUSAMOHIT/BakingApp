@@ -53,14 +53,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public int getItemCount() {
-        if (mRecipes != null){
+        if (mRecipes != null) {
             return mRecipes.size();
         }
 
         return 0;
     }
 
-    public void setRecipes(List<Recipe> recipes){
+    public void setRecipes(List<Recipe> recipes) {
 
         if (diffIsOperating) return;
 
@@ -72,9 +72,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(diffResult -> {
-                                diffResult.dispatchUpdatesTo(RecipeAdapter.this);
-                                mRecipes = recipes;
-                                diffIsOperating = false;
+                            diffResult.dispatchUpdatesTo(RecipeAdapter.this);
+                            mRecipes = recipes;
+                            diffIsOperating = false;
                         })
         );
     }
@@ -94,15 +94,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             mRecipeItemBinding = recipeItemBinding;
         }
 
-        void bindData(Recipe recipe){
+        void bindData(Recipe recipe) {
             mRecipeItemBinding.recipeNameTextView.setText(recipe.getName());
-            if (!recipe.getImage().isEmpty()){
+            if (!recipe.getImage().isEmpty()) {
                 Picasso.get().load(recipe.getImage())
                         .error(R.drawable.ic_error_24dp)
                         .into(mRecipeItemBinding.recipeImageView);
             }
             mRecipeItemBinding.getRoot().setOnClickListener(view -> {
-                if (mRecipeItemOnClickListener != null){
+                if (mRecipeItemOnClickListener != null) {
                     mRecipeItemOnClickListener.onRecipeItemClicked(recipe);
                 }
             });

@@ -44,7 +44,7 @@ public class RecipeNetworkSource {
 
         mNetworkStatus.setValue(mNetworkUtil.isConnected());
 
-        if (mNetworkUtil.isConnected()){
+        if (mNetworkUtil.isConnected()) {
             mRecipeApi.getRecipes()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -76,7 +76,7 @@ public class RecipeNetworkSource {
         }
     }
 
-    public LiveData<Boolean> getNetworkStatus(){
+    public LiveData<Boolean> getNetworkStatus() {
         return mNetworkStatus;
     }
 
@@ -88,7 +88,7 @@ public class RecipeNetworkSource {
         return mRecipes;
     }
 
-    public void dispose(){
+    public void dispose() {
         disposables.dispose();
     }
 }

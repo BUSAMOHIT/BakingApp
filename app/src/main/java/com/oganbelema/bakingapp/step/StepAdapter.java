@@ -21,7 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder>  {
+public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
 
     private List<Step> mSteps = new ArrayList<>();
 
@@ -54,14 +54,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     @Override
     public int getItemCount() {
 
-        if (mSteps != null){
+        if (mSteps != null) {
             return mSteps.size();
         }
 
         return 0;
     }
 
-    public void setSteps(List<Step> steps){
+    public void setSteps(List<Step> steps) {
         if (diffIsOperating) return;
 
         diffIsOperating = true;
@@ -87,7 +87,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     class StepViewHolder extends RecyclerView.ViewHolder {
 
-        StepItemBinding  mStepItemBinding;
+        StepItemBinding mStepItemBinding;
 
         public StepViewHolder(@NonNull StepItemBinding stepItemBinding) {
             super(stepItemBinding.getRoot());
@@ -95,13 +95,13 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             mStepItemBinding = stepItemBinding;
         }
 
-        public void bindData(Step step){
+        public void bindData(Step step) {
             mStepItemBinding.stepDescriptionTextView.setText(step.getDescription());
 
             mStepItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mStepItemOnClickListener != null){
+                    if (mStepItemOnClickListener != null) {
                         mStepItemOnClickListener.onStepItemClicked(step);
                     }
                 }
